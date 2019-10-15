@@ -2,7 +2,8 @@
 本项目旨在突破越来越严苛的互联网环境，采用CDN+TLS+Nginx+v2ray进行伪装并突破防火墙。
 
 # 技能点列表
-- [bandwagonhost[centos7]](https://bandwagonhost.com)【境外vps】
+- [bandwagonhost[centos7]链接一](https://bandwagonhost.com) 
+- [bandwagonhost[centos7]链接二](https://bwh1.net)【境外vps或者其他vps厂商】
 - [cloudflare](cloudflare.com)【CDN】
 - [godaddy](https://www.godaddy.com/)【域名厂商】
 - [letsencrypt](https://letsencrypt.org/)【HTTPS】
