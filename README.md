@@ -190,6 +190,12 @@ WantedBy=multi-user.target
 ```
 sudo systemctl enable nginxReboot.service
 ```
+- 可能出现的错误
+```
+# 可能会出现 (13: Permission denied) while connecting to upstream:[nginx]
+// 解决方法 执行下面的命令
+setsebool -P httpd_can_network_connect 1
+```
 
 ### 2.配置v2ray_ws_tls开机自启
 - 创建service文件
