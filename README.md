@@ -12,7 +12,7 @@
 # 1.准备工作
 ## 1.注册[cloudflare](cloudflare.com)
 ## 2.注册[godaddy](https://www.godaddy.com/)并购买域名
-- 域名可选择xyz结尾的国际域名，可采用多字符乱码的方式组合域名，首年大概8RMB左右，第二年可以直接买一个新的。
+- 域名可选择xyz结尾的国际域名，可采用多字符乱码的方式组合域名，(比如wk1c.xyz)首年大概8RMB左右，第二年可以直接买一个新的。
 
 ## 3.修改godaddy域名的DNS解析
 ### 1.登录cloudflare，添加域名
@@ -27,7 +27,7 @@
 - cloudflare提示界面
 <img src="https://raw.githubusercontent.com/jerry-ap/v2ray-network/master/fodder/cloudflare_dns.png" width=400>
 
-- 修改dns
+- godaddy DNS管理，根据上面的cloudflare提示界面修改为相应的dns
 <img src="https://raw.githubusercontent.com/jerry-ap/v2ray-network/master/fodder/godayddy_dns.png" width=400>
 
 ## 4.增加cloudflare域名解析
@@ -48,7 +48,7 @@ yum install nginx
 - 1.下载配置文件并替换默认文件
 ```
 cd /etc/nginx&&rm -rf /etc/nginx/nginx.conf&&wget https://raw.githubusercontent.com/jerry-ap/v2ray-network/master/config/nginx.conf
-# 如果缺少wget 则执行，然后重复上面的命令
+# 如果缺少wget 则执行下面的命令，然后重复上面的命令
 yum install wget
 ```
 - 将下载好的文件中关于ls.xxx.xyz的内容都替换成你的二级域名
@@ -81,6 +81,7 @@ no crontab for user
 
 - 2.生成https证书
 ```
+# 替换ls.xxx.xyz为自己的域名
 sudo ~/.acme.sh/acme.sh --issue -d ls.xxx.xyz --standalone -k ec-256
 
 # 如果提示Please install socat tools first.则执行，安装完成后继续重复执行上面的命令
@@ -89,6 +90,7 @@ yum install socat
 
 - 3.安装证书
 ```
+# 替换ls.xxx.xyz为自己的域名
 ~/.acme.sh/acme.sh --installcert -d ls.xxx.xyz --fullchainpath /etc/nginx/ls.xxx.xyz.crt --keypath /etc/nginx/ls.xxx.xyz.key --ecc
 ```
 
@@ -137,6 +139,7 @@ cd&&wget https://raw.githubusercontent.com/jerry-ap/v2ray-network/master/config/
 ```
 https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 ```
+
 - 选择使用Pac模式，即可
 
 # 5.其余设置
