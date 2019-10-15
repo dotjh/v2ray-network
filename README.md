@@ -154,7 +154,7 @@ https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 - 使用方法 [点我查看](https://github.com/233boy/v2ray/wiki/V2RayN%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)
 
 <hr/>
-<h3>到这里结束可以测试是否能上被q的网站</h3>
+<h3>到这里就配置完成，可以测试是否能上被q的网站</h3>
 <hr/>
 
 # 5.其余设置
