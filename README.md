@@ -106,6 +106,13 @@ yum install socat
 # ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
 # ssl_prefer_server_ciphers on;
 ```
+
+- 5.每一次生成https证书后有效期只有三个月，需要快过期时更新（剩余七天内可以重新生成）
+```
+# 替换ls.xxx.xyz为自己的域名
+sudo ~/.acme.sh/acme.sh --renew -d ls.xxx.xyz --force --ecc
+```
+
 # 3.配置v2ray
 ## 1.安装v2ray
 
@@ -142,5 +149,93 @@ https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 ```
 
 - 选择使用Pac模式，即可
+## 2.windows
+- 下载v2rayN[点我下载](https://github.com/2dust/v2rayN/releases/download/2.44/v2rayN.zip)
+- 使用方法 [点我查看](https://github.com/233boy/v2ray/wiki/V2RayN%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)
+
+<hr/>
+<h3>到这里结束可以测试是否能上被q的网站</h3>
+<hr/>
 
 # 5.其余设置
+## 1.开机自启
+### 1.配置Nginx开机自启
+- 创建service文件
+```
+cd /etc/systemd/system&&touch nginxReboot.service
+```
+
+- 将下面内容复制到/etc/systemd/system/nginxReboot.service
+```
+[Unit]
+Description=nginx - high performance web server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+Environment=PATH=/root/.nvm/versions/node/v12.8.1/bin:/usr/bin/v2ray/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+ExecStartPre=/usr/sbin/nginx -t -c /etc/nginx/nginx.conf
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
+ExecReload=/usr/sbin/nginx -s reload
+ExecStop=/usr/sbin/nginx -s stop
+ExecQuit=/usr/sbin/nginx -s quit
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+- 设置开机自启
+```
+sudo systemctl enable nginxReboot.service
+```
+
+### 2.配置v2ray_ws_tls开机自启
+- 创建service文件
+```
+cd /etc/systemd/system&&touch v2ray_ws_tls.service
+```
+
+- 将下面内容复制到/etc/systemd/system/v2ray_ws_tls.service
+```
+[Unit]
+Description=V2Ray WS TLS Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/v2rayWSTLS.pid
+ExecStart=/usr/bin/v2ray/v2ray -config /root/config_ws_tls.json
+Restart=on-failure
+# Don't restart in the case of configuration error
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+```
+- 设置开机自启
+```
+sudo systemctl enable v2ray_ws_tls.service
+```
+### 3.测试开机自启是否成功
+- 重启vps
+```
+reboot
+```
+- 重启后查看程序是否正常启动
+```
+# 执行下方命令查看v2ray是否启动
+ps -ef|grep v2ray
+
+root      4533     1  0 03:03 ?        00:00:00 /usr/bin/v2ray/v2ray -config /root/config_ws_tls.json
+root      4560  1287  0 03:04 pts/0    00:00:00 grep --color=auto v2ray
+
+# 执行下方命令查看nginx是否启动，
+ps -ef|grep nginx
+
+root       762     1  0 02:20 ?        00:00:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+nginx      763   762  0 02:20 ?        00:00:00 nginx: worker process
+root      4562  1287  0 03:04 pts/0    00:00:00 grep --color=auto nginx
+```
